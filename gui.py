@@ -1,5 +1,6 @@
 from tkinter import *
-import gui_comand
+from tkinter import ttk
+from gui_comand import *
 root = Tk()
 root.title("MineServerLauncher")
 root.geometry("700x500") 
