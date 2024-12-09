@@ -8,13 +8,25 @@ def get_minecraft_versions():
     versions = [version['id'] for version in data['versions']]
     return versions
 
-def get_version_details(version):
-    """Получение подробностей о версии Minecraft (ссылка для скачивания)"""
-    version_manifest_url = 'https://launchermeta.mojang.com/mc/game/version_manifest.json'
-    version_info = requests.get(version_manifest_url).json()
-    for ver in version_info['versions']:
-        if ver['id'] == version:
-            version_url = ver['url']
-            break
-    return requests.get(version_url).json()
+def download_server(version):
+        """Скачиваем сервер Minecraft с прогрессом."""
+        version_manifest_url = 'https://launchermeta.mojang.com/mc/game/version_manifest.json'
+        version_info = requests.get(version_manifest_url).json()
+        for ver in version_info['versions']:
+            if ver['id'] == version:
+                version_url = ver['url']
+                break
+        server_info = requests.get(version_url).json()
+        server_url = server_info['downloads']['server']['url']
 
+        # Запускаем скачивание
+        response = requests.get(server_url, stream=True)
+        total_size = int(response.headers.get('content-length', 0))
+        downloaded = 0
+
+        file_name = f'{version}.jar'
+        with open(file_name, 'wb') as file:
+            for chunk in response.iter_content(chunk_size=1024):
+                file.write(chunk)
+                downloaded += len(chunk)
+        return file_name
