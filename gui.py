@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from api_handler import *
 from config import *
-
+from setinks import*
 # Initialize the global variable
 ver = None  # Declare and initialize ver
 
@@ -33,12 +33,7 @@ def up_button():
 
 def setinks_button():
     append_log("Запуск Настройки")
-    #window = tk.Tk()
-    #window.title("Новое окно")
-    #window.geometry("400x200")
-
-    
-
+    setinks()
 
 def Start():
     global ver  # Declare ver as a global variable
